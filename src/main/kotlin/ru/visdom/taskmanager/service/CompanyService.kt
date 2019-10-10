@@ -12,7 +12,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
 
     fun deleteById(id: Long) = companyRepository.deleteByIdNative(id)
 
-    fun insert(company: Company) = companyRepository.insertNative(company)
+    fun insert(company: Company) = companyRepository.insertNative(company.id, company.name)
 
-    fun update(company: Company) = companyRepository.updateNative(company)
+    fun update(company: Company) = companyRepository.updateNative(company.id, company.name)
 }
