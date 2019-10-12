@@ -3,6 +3,7 @@ package ru.visdom.taskmanager.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import ru.visdom.taskmanager.exception.CompanyNotFoundException
 import ru.visdom.taskmanager.model.Company
 import ru.visdom.taskmanager.service.CompanyService
 
@@ -10,13 +11,19 @@ import ru.visdom.taskmanager.service.CompanyService
 @RequestMapping("/company")
 class CompanyController(private val companyService: CompanyService){
     @GetMapping("/")
-    fun getAll() = companyService.getAll()
+    fun getAll() : ResponseEntity<Iterable<Company>> {
+        return try {
+            ResponseEntity(companyService.getAll(), HttpStatus.OK)
+        } catch (e: CompanyNotFoundException) {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+    }
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long) : ResponseEntity<Company> {
         return try {
             ResponseEntity(companyService.getById(id), HttpStatus.OK)
-        }catch (e: Exception){
+        }catch (e: CompanyNotFoundException){
             ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }

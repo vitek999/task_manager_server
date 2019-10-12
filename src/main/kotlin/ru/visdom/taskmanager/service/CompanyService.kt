@@ -7,7 +7,11 @@ import ru.visdom.taskmanager.repository.CompanyRepository
 
 @Service
 class CompanyService(private val companyRepository: CompanyRepository) {
-    fun getAll(): Iterable<Company> = companyRepository.findAllNative()
+    fun getAll(): Iterable<Company> {
+        val data = companyRepository.findAllNative()
+        if(data.isEmpty()) throw CompanyNotFoundException("")
+        return data
+    }
 
     fun getById(id: Long): Company = companyRepository.findByIdNative(id).orElseThrow { CompanyNotFoundException("") }
 
