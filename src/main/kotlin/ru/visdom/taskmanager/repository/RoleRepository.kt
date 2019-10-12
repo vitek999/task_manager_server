@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.Role
+import java.util.*
 
 interface RoleRepository : CrudRepository<Role, Long> {
 
@@ -12,7 +13,7 @@ interface RoleRepository : CrudRepository<Role, Long> {
     fun findAllNative(): List<Role>
 
     @Query(value = "SELECT * FROM role WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long): Role?
+    fun findByIdNative(id: Long): Optional<Role>
 
     @Modifying
     @Transactional
