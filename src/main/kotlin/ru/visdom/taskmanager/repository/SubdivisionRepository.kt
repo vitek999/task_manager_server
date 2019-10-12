@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.Subdivision
+import java.util.*
 
 interface SubdivisionRepository : CrudRepository<Subdivision, Long> {
     @Query(value = "SELECT * FROM subdivision ", nativeQuery = true)
     fun findAllNative(): List<Subdivision>
 
     @Query(value = "SELECT * FROM subdivision WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long): Subdivision?
+    fun findByIdNative(id: Long): Optional<Subdivision>
 
     @Modifying
     @Transactional
