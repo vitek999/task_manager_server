@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.Tag
+import java.util.*
 
 interface TagRepository : CrudRepository<Tag, Long> {
 
@@ -12,7 +13,7 @@ interface TagRepository : CrudRepository<Tag, Long> {
     fun findAllNative(): List<Tag>
 
     @Query(value = "SELECT * FROM tag WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long): Tag?
+    fun findByIdNative(id: Long): Optional<Tag>
 
     @Modifying
     @Transactional
