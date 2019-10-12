@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.Company
+import java.util.*
 
 interface CompanyRepository : CrudRepository<Company, Long> {
 
@@ -12,7 +13,7 @@ interface CompanyRepository : CrudRepository<Company, Long> {
     fun findAllNative() : List<Company>
 
     @Query(value = "SELECT * FROM company WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long) : Company?
+    fun findByIdNative(id: Long) : Optional<Company>
 
     @Modifying
     @Transactional
