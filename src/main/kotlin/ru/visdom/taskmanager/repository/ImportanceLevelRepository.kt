@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.ImportanceLevel
+import java.util.*
 
 interface ImportanceLevelRepository : CrudRepository<ImportanceLevel, Long> {
 
@@ -12,7 +13,7 @@ interface ImportanceLevelRepository : CrudRepository<ImportanceLevel, Long> {
     fun findAllNative() : List<ImportanceLevel>
 
     @Query(value = "SELECT * FROM importancelevel WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long) : ImportanceLevel?
+    fun findByIdNative(id: Long) : Optional<ImportanceLevel>
 
     @Modifying
     @Transactional
