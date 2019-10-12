@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.Task
 import java.time.LocalDateTime
+import java.util.*
 
 interface TaskRepository : CrudRepository<Task, Long> {
 
@@ -13,7 +14,7 @@ interface TaskRepository : CrudRepository<Task, Long> {
     fun findAllNative(): List<Task>
 
     @Query(value = "SELECT * FROM task WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long): Task?
+    fun findByIdNative(id: Long): Optional<Task>
 
     @Modifying
     @Transactional
