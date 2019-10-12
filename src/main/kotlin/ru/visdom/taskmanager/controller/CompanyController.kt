@@ -1,5 +1,6 @@
 package ru.visdom.taskmanager.controller
 
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -29,7 +30,13 @@ class CompanyController(private val companyService: CompanyService){
     }
 
     @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable id: Long) = companyService.deleteById(id)
+    fun deleteById(@PathVariable id: Long): ResponseEntity<Unit> {
+        return try {
+            ResponseEntity(companyService.deleteById(id), HttpStatus.OK)
+        } catch (e: DataIntegrityViolationException) {
+            ResponseEntity(HttpStatus.CONFLICT)
+        }
+    }
 
     @PostMapping("/")
     fun insert(@RequestBody company: Company) = companyService.insert(company)
