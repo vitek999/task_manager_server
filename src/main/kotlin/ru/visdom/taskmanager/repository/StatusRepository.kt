@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.visdom.taskmanager.model.Status
+import java.util.*
 
 interface StatusRepository : CrudRepository<Status, Long> {
 
@@ -12,7 +13,7 @@ interface StatusRepository : CrudRepository<Status, Long> {
     fun findAllNative(): List<Status>
 
     @Query(value = "SELECT * FROM status WHERE id = :id LIMIT 1", nativeQuery = true)
-    fun findByIdNative(id: Long): Status?
+    fun findByIdNative(id: Long): Optional<Status>
 
     @Modifying
     @Transactional
