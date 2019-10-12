@@ -9,7 +9,7 @@ import ru.visdom.taskmanager.repository.CompanyRepository
 class CompanyService(private val companyRepository: CompanyRepository) {
     fun getAll(): Iterable<Company> {
         val data = companyRepository.findAllNative()
-        if(data.isEmpty()) throw CompanyNotFoundException("")
+        if (data.isEmpty()) throw CompanyNotFoundException("")
         return data
     }
 
@@ -19,5 +19,8 @@ class CompanyService(private val companyRepository: CompanyRepository) {
 
     fun insert(company: Company) = companyRepository.insertNative(company.id, company.name)
 
-    fun update(company: Company) = companyRepository.updateNative(company.id, company.name)
+    fun update(company: Company) {
+        companyRepository.findByIdNative(company.id).orElseThrow { CompanyNotFoundException("") }
+        return companyRepository.updateNative(company.id, company.name)
+    }
 }

@@ -10,9 +10,9 @@ import ru.visdom.taskmanager.service.CompanyService
 
 @RestController
 @RequestMapping("/company")
-class CompanyController(private val companyService: CompanyService){
+class CompanyController(private val companyService: CompanyService) {
     @GetMapping("/")
-    fun getAll() : ResponseEntity<Iterable<Company>> {
+    fun getAll(): ResponseEntity<Iterable<Company>> {
         return try {
             ResponseEntity(companyService.getAll(), HttpStatus.OK)
         } catch (e: CompanyNotFoundException) {
@@ -21,10 +21,10 @@ class CompanyController(private val companyService: CompanyService){
     }
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long) : ResponseEntity<Company> {
+    fun getById(@PathVariable id: Long): ResponseEntity<Company> {
         return try {
             ResponseEntity(companyService.getById(id), HttpStatus.OK)
-        }catch (e: CompanyNotFoundException){
+        } catch (e: CompanyNotFoundException) {
             ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
@@ -39,8 +39,15 @@ class CompanyController(private val companyService: CompanyService){
     }
 
     @PostMapping("/")
-    fun insert(@RequestBody company: Company) = companyService.insert(company)
+    fun insert(@RequestBody company: Company): ResponseEntity<Unit> =
+            ResponseEntity(companyService.insert(company), HttpStatus.CREATED)
 
     @PutMapping("/")
-    fun update(@RequestBody company: Company) = companyService.update(company)
+    fun update(@RequestBody company: Company): ResponseEntity<Unit> {
+        return try {
+            ResponseEntity(companyService.update(company), HttpStatus.OK)
+        } catch (e: CompanyNotFoundException) {
+            ResponseEntity(HttpStatus.OK)
+        }
+    }
 }
